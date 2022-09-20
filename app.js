@@ -47,6 +47,7 @@ huntMushroomsButton.addEventListener('click', () => {
             type: mushroomType.type,
         };
         // > add the new mushroom to the mushrooms state
+        mushrooms.push(mushroom);
     }
 
     message = foundMessage[found];
@@ -91,11 +92,15 @@ function displayMessage() {
 
 function displayMushrooms() {
     mushroomContainer.innerHTML = '';
-
-    // > loop the mushrooms
-    // create a mushroom element using the renderMushroom function
-    // append it to the container
+    for (let i = 0; i < mushrooms.length; i++) {
+        const newMushroom = renderMushroom(mushrooms[i]);
+        mushroomContainer.append(newMushroom);
+    }
 }
+
+// > loop the mushrooms
+// create a mushroom element using the renderMushroom function
+// append it to the container
 
 function displayFriends() {
     friendsSection.innerHTML = '';
