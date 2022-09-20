@@ -47,6 +47,7 @@ huntMushroomsButton.addEventListener('click', () => {
             type: mushroomType.type,
         };
         // > add the new mushroom to the mushrooms state
+        mushrooms.push(mushroom);
     }
 
     message = foundMessage[found];
@@ -62,9 +63,13 @@ addFriendForm.addEventListener('submit', (e) => {
     // > create a new friend, with a "name" property that
     // is populated from `formData.get('name')` and a
     // "satisfied" property with an initial value of 0
-
+    const friend = {
+        name: formData.get('name'),
+        satisfied: 0,
+    };
     // > add the new friend to the friends array
 
+    friends.push(friend);
     // > set the message state to let the user know
     // they invited a new friend to the festival, include the friend's
     // name in the message
@@ -72,13 +77,15 @@ addFriendForm.addEventListener('submit', (e) => {
     addFriendForm.reset();
 
     // > call the display functions that need to re-display
+    displayFriends();
 });
 
 sayGoodbyeButton.addEventListener('click', () => {
     const stillHungry = [];
     for (const friend of friends) {
-        // > if the friend is not fully satisfied, push
-        // them into the stillHungry array
+        if (friend.satisfied !== 3) {
+            stillHungry.push(friend);
+        }
     }
     friends = stillHungry;
     displayFriends();
@@ -91,11 +98,15 @@ function displayMessage() {
 
 function displayMushrooms() {
     mushroomContainer.innerHTML = '';
-
-    // > loop the mushrooms
-    // create a mushroom element using the renderMushroom function
-    // append it to the container
+    for (let i = 0; i < mushrooms.length; i++) {
+        const newMushroom = renderMushroom(mushrooms[i]);
+        mushroomContainer.append(newMushroom);
+    }
 }
+
+// > loop the mushrooms
+// create a mushroom element using the renderMushroom function
+// append it to the container
 
 function displayFriends() {
     friendsSection.innerHTML = '';
@@ -104,6 +115,17 @@ function displayFriends() {
         const friendEl = renderFriend(friend);
 
         friendEl.addEventListener('click', () => {
+            if (mushrooms.length === 0) {
+                message = `No mushrooms! Go hunt some more!`;
+                displayMessage();
+            } else if (friend.satisfied === 3) {
+                message = `${friend.name} is fully satisfied. Pick another friend!`;
+                displayMessage();
+            } else {
+                const fedMushroom = mushrooms.pop();
+                friend.satisfied++;
+                message = `${friend.name} enjoyed the ${fedMushroom.type}!`;
+            }
             // > handle the three possible outcomes:
             // 1. No mushrooms, set a message to go hunt for more
             // 2. Friend is already fully satisfied (3), set a message to pick another friend
