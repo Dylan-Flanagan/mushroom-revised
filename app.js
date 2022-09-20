@@ -121,7 +121,10 @@ function displayFriends() {
             } else if (friend.satisfied === 3) {
                 message = `${friend.name} is fully satisfied. Pick another friend!`;
                 displayMessage();
-                displayFriends();
+            } else {
+                const fedMushroom = mushrooms.pop();
+                friend.satisfied++;
+                message = `${friend.name} enjoyed the ${fedMushroom.type}!`;
             }
             // > handle the three possible outcomes:
             // 1. No mushrooms, set a message to go hunt for more
