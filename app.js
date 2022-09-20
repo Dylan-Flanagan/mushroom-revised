@@ -117,6 +117,9 @@ function displayFriends() {
             if (mushrooms.length === 0) {
                 message = `No mushrooms! Go hunt some more!`;
                 displayMessage();
+            } else if (friend.satisfied === 3) {
+                message = `${friend.name} is fully satisfied. Pick another friend!`;
+                displayMessage();
             }
             // > handle the three possible outcomes:
             // 1. No mushrooms, set a message to go hunt for more
